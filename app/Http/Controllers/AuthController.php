@@ -13,7 +13,7 @@ class AuthController extends Controller
         if($token)
             return response()->json(['token' => $token]);
         else
-            return response()->json(['erro' => 'Utilizador ou password inválidos'],403);
+            return response()->json(['error' => 'Utilizador ou password inválidos'],403);
 
     }
     public function logout()

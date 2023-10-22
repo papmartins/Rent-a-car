@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Locacao;
+use App\Models\Rent;
 use Illuminate\Http\Request;
 
-class LocacaoController extends Controller
+class RentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class LocacaoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Locacao  $locacao
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function show(Locacao $locacao)
+    public function show(Rent $rent)
     {
         //
     }
@@ -52,10 +52,10 @@ class LocacaoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Locacao  $locacao
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function edit(Locacao $locacao)
+    public function edit(Rent $rent)
     {
         //
     }
@@ -64,10 +64,10 @@ class LocacaoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Locacao  $locacao
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Locacao $locacao)
+    public function update(Request $request, Rent $rent)
     {
         //
     }
@@ -75,10 +75,10 @@ class LocacaoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Locacao  $locacao
+     * @param  \App\Models\Rent  $rent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Locacao $locacao)
+    public function destroy(Rent $rent)
     {
         //
     }

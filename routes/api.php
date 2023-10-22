@@ -23,11 +23,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // });
 // Route::prefix('v1')->middleware('jwt.auth')->group( function(){    
 Route::middleware('jwt.auth')->group( function(){    
-    Route::apiResource('carro', 'CarroController');
-    Route::apiResource('cliente', 'ClienteController');
-    Route::apiResource('locacao', 'LocacaoController');
-    Route::apiResource('marca', 'MarcaController');
-    Route::apiResource('modelo', 'ModeloController');
+    Route::apiResource('car', 'CarController');
+    Route::apiResource('customer', 'CustomerController');
+    Route::apiResource('rent', 'RentController');
+    Route::apiResource('brand', 'BrandController');
+    Route::apiResource('model', 'CarModelController');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');

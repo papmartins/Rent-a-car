@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 
-class ModeloRepository extends AbstractRepository{
+class CarModelRepository extends AbstractRepository{
 
     /*
     public function __construct(Model $model){
@@ -11,13 +11,13 @@ class ModeloRepository extends AbstractRepository{
 
     // metodos da regras de negócio
     
-    public function filtro_marca($filtros){
+    public function filter_brand($filtros){
         $filtros = explode(';', $filtros);
-        foreach($filtros as $filtro){
-            $this->c = explode(':',$filtro);
+        foreach($filtros as $filter){
+            $this->c = explode(':',$filter);
             
             $this->model = $this->model->with(
-                ['marca' => function ($query) {
+                ['brand' => function ($query) {
                     $query->orderBy('created_at', 'asc');
                     $query->where($this->c[0],$this->c[1],$this->c[2]);
                 
@@ -26,22 +26,22 @@ class ModeloRepository extends AbstractRepository{
         }
     }
     
-    public function selectAttributos($atributos){
-        $this->model = $this->model->selectRaw($atributos);
+    public function selectAttributes($attributes){
+        $this->model = $this->model->selectRaw($attributes);
     }
 
-    public function selectAttributosRegistosRelacionados($atributos){
-        $this->model = $this->model->with($atributos);
+    public function selectAttributesRelatedRecords($attributes){
+        $this->model = $this->model->with($attributes);
     }
-    public function filtro($filtros){
+    public function filter($filtros){
         $filtros = explode(';', $filtros);
-        foreach($filtros as $filtro){
-            $c = explode(':',$filtro);
+        foreach($filtros as $filter){
+            $c = explode(':',$filter);
             $this->model = $this->model->where($c[0],$c[1],$c[2]);
         }
     } 
     
-    public function getResultado(){
+    public function getResults(){
         return $this->model->get();
     }
     */

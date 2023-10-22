@@ -24,13 +24,14 @@
                             </div>
                         </div>
 
+
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" >
 
                                     <label class="form-check-label" for="remember">
-                                        Matenha-me conectado
+                                        Lembrar
                                     </label>
                                 </div>
                             </div>
@@ -44,7 +45,7 @@
 
                                
                                     <a class="btn btn-link" href="#">
-                                        Esqueceu a password?
+                                        Esqueceu-se a password?
                                     </a>
                             </div>
                         </div>
@@ -61,7 +62,7 @@ export default{
     props:['csrf_token'], // semelhante ao data, tem que ser em minusculas
     data(){
         return {
-            email : '',
+            email : 'paulo',
             password: ''
         }
     },

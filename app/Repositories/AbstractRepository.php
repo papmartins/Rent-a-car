@@ -4,6 +4,10 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractRepository{
+    private $model;
+    private $c;
+    private $attributes;
+
     public function __construct(Model $model){
         $this->model = $model;
         $this->c = array();
@@ -11,31 +15,31 @@ abstract class AbstractRepository{
 
     // metodos da regras de negócio
     
-    public function selectAttributos($atributos){
-        $this->model = $this->model->selectRaw($atributos);
+    public function selectAttributes($attributes){
+        $this->model = $this->model->selectRaw($attributes);
     }
 
-    public function selectAttributosRegistosRelacionados($atributos){
-        $this->model = $this->model->with($atributos);
+    public function selectAttributesRelatedRecords($attributes){
+        $this->model = $this->model->with($attributes);
     }
-    public function filtro($filtros){
+    public function filter($filtros){
         $filtros = explode(';', $filtros);
-        foreach($filtros as $filtro){
-            $c = explode(':',$filtro);
+        foreach($filtros as $filter){
+            $c = explode(':',$filter);
             $this->model = $this->model->where($c[0],$c[1],$c[2]);
         }
     } 
-    public function filtro_other($filtros, $relationship,$atributos){
-        $this->atributos = $atributos;
+    public function filter_other($filtros, $relationship,$attributes){
+        $this->attributes = $attributes;
         $filtros = explode(';', $filtros);
-        foreach($filtros as $filtro){
-            $this->c = explode(':',$filtro);
+        foreach($filtros as $filter){
+            $this->c = explode(':',$filter);
             
             $this->model = $this->model->with(
                 ["".$relationship => function ($query) {
                     $query->orderBy('created_at', 'desc');
-                    if(strlen($this->atributos) > 0 )
-                        $query->selectRaw(explode(":",$this->atributos)[1])->where($this->c[0],$this->c[1],$this->c[2]);
+                    if(strlen($this->attributes) > 0 )
+                        $query->selectRaw(explode(":",$this->attributes)[1])->where($this->c[0],$this->c[1],$this->c[2]);
                     else
                         $query->where($this->c[0],$this->c[1],$this->c[2]);
                 
@@ -44,7 +48,7 @@ abstract class AbstractRepository{
         }
     }
     
-    public function getResultado(){
+    public function getResults(){
         return $this->model->get();
     }
     
