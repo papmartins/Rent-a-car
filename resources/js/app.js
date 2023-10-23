@@ -8,6 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+import Vue from 'vue';
+import store from './store';
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,6 +25,14 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-component', require('./components/Login.vue').default);
+Vue.component('home-component', require('./components/Home.vue').default);
+Vue.component('brands-component', require('./components/Brands.vue').default);
+Vue.component('input-container-component', require('./components/InputContainer.vue').default);
+Vue.component('table-component', require('./components/Table.vue').default);
+Vue.component('card-component', require('./components/Card.vue').default);
+Vue.component('modal-component', require('./components/Modal.vue').default);
+Vue.component('alert-component', require('./components/Alert.vue').default);
+Vue.component('paginate-component', require('./components/Paginate.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,6 +40,26 @@ Vue.component('login-component', require('./components/Login.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.filter('formataDateTimeGlobal', function(d) {
+    if(!d) return ''
+
+    d = d.split('T')
+
+    let data = d[0]
+    let tempo = d[1]
+
+    //formatando a data
+    data = data.split('-')
+    data = data[2] + '/' + data[1] + '/' + data[0]
+
+    //formatar o tempo
+    tempo = tempo.split('.')
+    tempo = tempo[0]
+
+    return data + ' ' + tempo
+})
+
 const app = new Vue({
     el: '#app',
+    store,
 });

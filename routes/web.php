@@ -17,12 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Auth::routes(); 
-// Auth::routes(['register' => false]); // sem resgistar
-
-Route::get('/home', 'HomeController@index')->name('home');
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function() {
+    Route::get('/brands', function() {  return view('app.brands'); })->name('brands');
+    Route::get('/customers', function() {  return view('app.customers'); })->name('customers');
+});

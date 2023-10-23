@@ -9,6 +9,7 @@ class AuthController extends Controller
     
     public function login(Request $request)
     {
+        dd($request->all());
         $token = auth('api')->attempt($request->all('email','password')); // do guards em Config\auth.php
         if($token)
             return response()->json(['token' => $token]);
