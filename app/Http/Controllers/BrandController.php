@@ -48,7 +48,7 @@ class BrandController extends Controller
             $brandRepository->filter_other($request->filter_car_model,'models',$attributes_models);
         }
         
-        return response()->json($brandRepository->getResults(),200);
+        return response()->json($brandRepository->getResultsPaginated(5),200);
 
 
         // ---------------------------------------

@@ -47,13 +47,7 @@
                     <template v-slot:footer>
                         <div class="row">
                             <div class="col-10">
-                                <paginate-component>
-                                    <li v-for="l, key in brands.links" :key="key" 
-                                        :class="l.active ? 'page-item active' : 'page-item'" 
-                                        @click="pagination(l)"
-                                    >
-                                        <a class="page-link" v-html="l.label"></a>
-                                    </li>
+                                <paginate-component :links="brands.links" @pagination="pagination($event)">
                                 </paginate-component>
                             </div>
 
@@ -283,7 +277,7 @@ import Paginate from './Paginate.vue'
                 if(l.url) {
                     //this.urlBase = l.url //ajustando a url de consulta com o parâmetro de página
                     this.urlPagination = l.url.split('?')[1]
-                    this.loadList() //requisitando novamente os dados para nossa API
+                    this.loadList() 
                 }
             },
             loadList() {
@@ -292,7 +286,7 @@ import Paginate from './Paginate.vue'
                 
                 axios.get(url)
                     .then(response => {
-                        this.brands = response;
+                        this.brands = response.data;
                     })
                     .catch(errors => {
                         console.log(errors.message)
