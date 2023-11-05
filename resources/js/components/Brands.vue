@@ -318,7 +318,7 @@ import Paginate from './Paginate.vue'
                     .then(response => {
                         this.transactionStatus = 'added'
                         this.transactionDetails = {
-                            mensagem: 'ID do registro: ' + response.data.id
+                            mensage: 'ID do registro: ' + response.data.id
                         }
                         this.loadList()
                         
@@ -326,7 +326,7 @@ import Paginate from './Paginate.vue'
                     .catch(errors => {
                         this.transactionStatus = 'errors';
                         this.transactionDetails = {
-                            mensagem: errors.message,
+                            mensage: errors.message,
                             data: errors.error
                         }
                         errors.message
