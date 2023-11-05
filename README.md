@@ -1,4 +1,4 @@
-This is an application produced during an Udemy course of Fullstack, In PHP and Vue.js
+This is an application produced in an Udemy course of Fullstack, with Laravel and Vue.js technologies
 
 The vue components are instaled in resources\js\components
 
