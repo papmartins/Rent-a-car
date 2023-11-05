@@ -1,11 +1,10 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                
+            <div class="col-md-8">                
                 
                 <!-- início do card de search -->
-                <card-component title="Busca de marcas">
+                <card-component title="Pesquisa de marcas">
                     <template v-slot:content>
                         <div class="form-row">
                             <div class="col mb-3">
@@ -22,7 +21,7 @@
                     </template>
                     
                     <template v-slot:footer>
-                        <button type="submit" class="btn btn-primary btn-sm float-right" @click="search()">Pesquisar</button>
+                        <button type="submit" class="btn btn-primary btn-sm float-right" @click="searchBrand()">Pesquisar</button>
                     </template>
                 </card-component>
                 <!-- fim do card de search -->
@@ -37,10 +36,10 @@
                             :update="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandUpdate'}"
                             :remove="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandRemove'}"
                             :titles="{
-                                id: {title: 'ID', tipo: 'texto'},
-                                name: {title: 'Nome', tipo: 'texto'},
-                                imagem: {title: 'Imagem', tipo: 'imagem'},
-                                created_at: {title: 'Criação', tipo: 'data'},
+                                id: {title: 'ID', type: 'text'},
+                                name: {title: 'Nome', type: 'text'},
+                                image: {title: 'Imagem', type: 'image'},
+                                created_at: {title: 'Criação', type: 'date'},
                             }"
                         ></table-component>
                     </template>
@@ -51,7 +50,7 @@
                                 <paginate-component>
                                     <li v-for="l, key in brands.links" :key="key" 
                                         :class="l.active ? 'page-item active' : 'page-item'" 
-                                        @click="paginacao(l)"
+                                        @click="pagination(l)"
                                     >
                                         <a class="page-link" v-html="l.label"></a>
                                     </li>
@@ -73,21 +72,21 @@
         <modal-component id="modalMarca" title="Adicionar marca">
 
             <template v-slot:warnings>
-                <alert-component tipo="success" :details="transactionDetails" title="Cadastro realizado com sucesso" v-if="transactionStatus == 'added'"></alert-component>
-                <alert-component tipo="danger" :details="transactionDetails" title="Erro ao tentar cadastrar a marca" v-if="transactionStatus == 'error'"></alert-component>
+                <alert-component type="success" :details="transactionDetails" title="Cadastro realizado com sucesso" v-if="transactionStatus == 'added'"></alert-component>
+                <alert-component type="danger" :details="transactionDetails" title="Erro ao tentar cadastrar a marca" v-if="transactionStatus == 'error'"></alert-component>
             </template>
 
             <template v-slot:content>
                 <div class="form-group">
-                    <input-container-component title="Nome da marca" id="novoNome" id-help="novoNomeHelp" texto-ajuda="Informe o nome da marca">
-                        <input type="text" class="form-control" id="novoNome" aria-describedby="novoNomeHelp" placeholder="Nome da marca" v-model="nameBrand">
+                    <input-container-component title="Nome da marca" id="newName" id-help="newNameHelp" texto-ajuda="Informe o nome da marca">
+                        <input type="text" class="form-control" id="newName" aria-describedby="newNameHelp" placeholder="Nome da marca" v-model="nameBrand">
                     </input-container-component>
                     {{ nameBrand }}
                 </div>
 
                 <div class="form-group">
-                    <input-container-component title="Imagem" id="novoImagem" id-help="novoImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
-                        <input type="file" class="form-control-file" id="novoImagem" aria-describedby="novoImagemHelp" placeholder="Selecione uma imagem" @change="carregarImagem($event)">
+                    <input-container-component title="Imagem" id="newImage" id-help="newImageHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+                        <input type="file" class="form-control-file" id="newImage" aria-describedby="newImageHelp" placeholder="Selecione uma imagem" @change="updateImage($event)">
                     </input-container-component>
                     {{ imageFiles }}
                 </div>
@@ -95,7 +94,7 @@
 
             <template v-slot:footer>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
+                <button type="button" class="btn btn-primary" @click="save()">Salvar</button>
             </template>
         </modal-component>
         <!-- fim do modal de inclusão de marca -->
@@ -113,7 +112,7 @@
                 </input-container-component>
 
                 <input-container-component title="Imagem">
-                    <img :src="'storage/'+$store.state.item.imagem" v-if="$store.state.item.imagem">
+                    <img :src="'storage/'+$store.state.item.image" v-if="$store.state.item.image">
                 </input-container-component>
 
                 <input-container-component title="Data de criação">
@@ -130,10 +129,10 @@
         <!-- início do modal de remoção de marca -->
         <modal-component id="modalBrandRemove" title="Remover marca">
             <template v-slot:warnings>
-                <alert-component tipo="success" title="Transação realizada com sucesso" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'sucesso'"></alert-component>
-                <alert-component tipo="danger" title="Erro na transação" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'erro'"></alert-component>
+                <alert-component type="success" title="Transação realizada com sucesso" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'success'"></alert-component>
+                <alert-component type="danger" title="Erro na transação" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'error'"></alert-component>
             </template>
-            <template v-slot:content v-if="$store.state.transaction.status != 'sucesso'">
+            <template v-slot:content v-if="$store.state.transaction.status != 'success'">
                 <input-container-component title="ID">
                     <input type="text" class="form-control" :value="$store.state.item.id" disabled>
                 </input-container-component>
@@ -144,7 +143,7 @@
             </template>
             <template v-slot:footer>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-danger" @click="remove()" v-if="$store.state.transaction.status != 'sucesso'">Remover</button>
+                <button type="button" class="btn btn-danger" @click="remove()" v-if="$store.state.transaction.status != 'success'">Remover</button>
             </template>
         </modal-component>
         <!-- fim do modal de remoção de marca -->
@@ -153,8 +152,8 @@
         <modal-component id="modalBrandUpdate" title="Atualizar marca">
 
             <template v-slot:warnings>
-                <alert-component tipo="success" title="Transação realizada com sucesso" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'sucesso'"></alert-component>
-                <alert-component tipo="danger" title="Erro na transação" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'erro'"></alert-component>
+                <alert-component type="success" title="Transação realizada com sucesso" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'success'"></alert-component>
+                <alert-component type="danger" title="Erro na transação" :details="$store.state.transaction" v-if="$store.state.transaction.status == 'error'"></alert-component>
             </template>
 
             <template v-slot:content>
@@ -165,8 +164,8 @@
                 </div>
 
                 <div class="form-group">
-                    <input-container-component title="Imagem" id="atualizarImagem" id-help="atualizarImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
-                        <input type="file" class="form-control-file" id="atualizarImagem" aria-describedby="atualizarImagemHelp" placeholder="Selecione uma imagem" @change="carregarImagem($event)">
+                    <input-container-component title="Imagem" id="updateImage" id-help="updateImageHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+                        <input type="file" class="form-control-file" id="updateImage" aria-describedby="updateImageHelp" placeholder="Selecione uma imagem" @change="updateImage($event)">
                     </input-container-component>
                 </div>
             </template>
@@ -183,10 +182,10 @@
 <script>
 import Paginate from './Paginate.vue'
     export default {
-  components: { Paginate },
+        components: { Paginate },
         data() {
             return {
-                urlBase: 'http://localhost/api/v1/marca',
+                urlBase: 'http://localhost/api/v1/brand',
                 urlPagination: '',
                 urlFilter: '',
                 nameBrand: '',
@@ -205,7 +204,7 @@ import Paginate from './Paginate.vue'
                 formData.append('name', this.$store.state.item.name)
 
                 if(this.imageFiles[0]) {
-                    formData.append('imagem', this.imageFiles[0])
+                    formData.append('image', this.imageFiles[0])
                 }
 
                 let url = this.urlBase + '/' + this.$store.state.item.id
@@ -218,15 +217,15 @@ import Paginate from './Paginate.vue'
 
                 axios.post(url, formData, config)
                     .then(response => {
-                        this.$store.state.transaction.status = 'sucesso'
+                        this.$store.state.transaction.status = 'success'
                         this.$store.state.transaction.message = 'Registro de marca atualizado com sucesso!'
 
                         //limpar o campo de seleção de arquivos
-                        atualizarImagem.value = ''
-                        this.carregarLista()
+                        updateImage.value = ''
+                        this.loadList()
                     })
                     .catch(errors => {
-                        this.$store.state.transaction.status = 'erro'
+                        this.$store.state.transaction.status = 'error'
                         this.$store.state.transaction.message = errors.response.data.message
                         this.$store.state.transaction.data = errors.response.data.errors
                     })
@@ -243,21 +242,21 @@ import Paginate from './Paginate.vue'
 
                 let url = this.urlBase + '/' + this.$store.state.item.id
 
-                axios.post(url, formData)
+                axios.delete(url)
                     .then(response => {                        
-                        this.$store.state.transaction.status = 'sucesso'
+                        this.$store.state.transaction.status = 'success'
                         this.$store.state.transaction.message = response.data.msg
-                        this.carregarLista()
+                        this.loadList()
                     })
                     .catch(errors => {
-                        this.$store.state.transaction.status = 'erro'
+                        this.$store.state.transaction.status = 'error'
                         this.$store.state.transaction.message = errors.response.data.erro
                     })
 
             },
-            search() {
-                //console.log(this.search)
-
+            searchBrand() {
+                // console.log(this.search)
+ 
                 let filter = ''
 
                 for(let key in this.search) {
@@ -278,41 +277,40 @@ import Paginate from './Paginate.vue'
                     this.urlFilter = ''
                 }
 
-                this.carregarLista()
+                this.loadList()
             },
-            paginacao(l) {
+            pagination(l) {
                 if(l.url) {
                     //this.urlBase = l.url //ajustando a url de consulta com o parâmetro de página
                     this.urlPagination = l.url.split('?')[1]
-                    this.carregarLista() //requisitando novamente os dados para nossa API
+                    this.loadList() //requisitando novamente os dados para nossa API
                 }
             },
-            carregarLista() {
+            loadList() {
 
-                let url = this.urlBase + '?' + this.urlPagination + this.urlFilter
+                let url = this.urlBase + '?' + this.urlPagination + this.urlFilter;
                 
                 axios.get(url)
                     .then(response => {
-                        this.brands = response.data
-                        //console.log(this.brands)
+                        this.brands = response;
                     })
                     .catch(errors => {
-                        console.log(errors)
+                        console.log(errors.message)
                     })
             },
-            carregarImagem(e) {
+            updateImage(e) {
                 this.imageFiles = e.target.files
             },
-            salvar() {
-                console.log(this.nameBrand, this.imageFiles[0])
+            save() {
 
                 let formData = new FormData();
                 formData.append('name', this.nameBrand)
-                formData.append('imagem', this.imageFiles[0])
+                formData.append('image', this.imageFiles[0])
 
                 let config = {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json'
                     }
                 }
 
@@ -322,21 +320,21 @@ import Paginate from './Paginate.vue'
                         this.transactionDetails = {
                             mensagem: 'ID do registro: ' + response.data.id
                         }
+                        this.loadList()
                         
-                        console.log(response)
                     })
                     .catch(errors => {
-                        this.transactionStatus = 'error'
+                        this.transactionStatus = 'errors';
                         this.transactionDetails = {
-                            mensagem: errors.response.data.message,
-                            data: errors.response.data.errors
+                            mensagem: errors.message,
+                            data: errors.error
                         }
-                        //errors.response.data.message
+                        errors.message
                     })
             }
         },
         mounted() {
-            this.carregarLista()
+            this.loadList()
         }
     }
 </script>

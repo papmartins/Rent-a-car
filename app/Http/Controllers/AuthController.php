@@ -9,12 +9,11 @@ class AuthController extends Controller
     
     public function login(Request $request)
     {
-        dd($request->all());
         $token = auth('api')->attempt($request->all('email','password')); // do guards em Config\auth.php
         if($token)
             return response()->json(['token' => $token]);
         else
-            return response()->json(['error' => 'Utilizador ou password inválidos'],403);
+            return response()->json(['erro' => 'Utilizador ou password inválidos'],403);
 
     }
     public function logout()

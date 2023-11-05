@@ -40,7 +40,6 @@ class BrandController extends Controller
             
         }
         
-        
         if($request->has('filter')){
             $brandRepository->filter($request->filter);
         }

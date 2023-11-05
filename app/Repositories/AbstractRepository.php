@@ -26,6 +26,9 @@ abstract class AbstractRepository{
         $filtros = explode(';', $filtros);
         foreach($filtros as $filter){
             $c = explode(':',$filter);
+            if (strtolower($c[1]) == 'like') {
+                $c[2] = "%".$c[2]."%";
+            }
             $this->model = $this->model->where($c[0],$c[1],$c[2]);
         }
     } 

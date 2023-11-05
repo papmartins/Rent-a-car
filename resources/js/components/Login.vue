@@ -83,11 +83,11 @@
                     .then(data => {
                         if(data.token) {
                             document.cookie = 'token='+data.token
+                            //dar sequência no envio do form de autenticação por sessão
+                            e.target.submit()
                         }
                     })
                 
-                //dar sequência no envio do form de autenticação por sessão
-                e.target.submit()
             }
         }
     }
