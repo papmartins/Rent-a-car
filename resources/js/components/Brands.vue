@@ -8,12 +8,12 @@
                     <template v-slot:content>
                         <div class="form-row">
                             <div class="col mb-3">
-                                <input-container-component title="ID" id="inputId" id-help="idHelp" texto-ajuda="Opcional. Informe o ID da marca">
+                                <input-container-component title="ID" id="inputId" id-help="idHelp" help-text="Opcional. Informe o ID da marca">
                                     <input type="number" class="form-control" id="inputId" aria-describedby="idHelp" placeholder="ID" v-model="search.id">
                                 </input-container-component>                   
                             </div>
                             <div class="col mb-3">
-                                <input-container-component title="Nome da marca" id="inputNome" id-help="nomeHelp" texto-ajuda="Opcional. Informe o nome da marca">
+                                <input-container-component title="Nome da marca" id="inputNome" id-help="nomeHelp" help-text="Opcional. Informe o nome da marca">
                                     <input type="text" class="form-control" id="inputNome" aria-describedby="nomeHelp" placeholder="Nome da marca" v-model="search.name">
                                 </input-container-component>
                             </div>
@@ -32,9 +32,9 @@
                     <template v-slot:content>
                         <table-component 
                             :data="brands.data"
-                            :view="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandView'}"
-                            :update="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandUpdate'}"
-                            :remove="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandRemove'}"
+                            :view="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandView', title: 'Visualizar'}"
+                            :update="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandUpdate', title: 'Atualizar'}"
+                            :remove="{visible: true, dataToggle: 'modal', dataTarget: '#modalBrandRemove', title: 'Remover'}"
                             :titles="{
                                 id: {title: 'ID', type: 'text'},
                                 name: {title: 'Nome', type: 'text'},
@@ -72,14 +72,14 @@
 
             <template v-slot:content>
                 <div class="form-group">
-                    <input-container-component title="Nome da marca" id="newName" id-help="newNameHelp" texto-ajuda="Informe o nome da marca">
+                    <input-container-component title="Nome da marca" id="newName" id-help="newNameHelp" help-text="Informe o nome da marca">
                         <input type="text" class="form-control" id="newName" aria-describedby="newNameHelp" placeholder="Nome da marca" v-model="nameBrand">
                     </input-container-component>
                     {{ nameBrand }}
                 </div>
 
                 <div class="form-group">
-                    <input-container-component title="Imagem" id="newImage" id-help="newImageHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+                    <input-container-component title="Imagem" id="newImage" id-help="newImageHelp" help-text="Selecione uma imagem no formato PNG">
                         <input type="file" class="form-control-file" id="newImage" aria-describedby="newImageHelp" placeholder="Selecione uma imagem" @change="updateImage($event)">
                     </input-container-component>
                     {{ imageFiles }}
@@ -152,13 +152,13 @@
 
             <template v-slot:content>
                 <div class="form-group">
-                    <input-container-component title="Nome da marca" id="atualizarNome" id-help="atualizarNomeHelp" texto-ajuda="Informe o nome da marca">
-                        <input type="text" class="form-control" id="atualizarNome" aria-describedby="atualizarNomeHelp" placeholder="Nome da marca" v-model="$store.state.item.name">
+                    <input-container-component title="Nome da marca" id="updateName" id-help="updateNameHelp" help-text="Informe o nome da marca">
+                        <input type="text" class="form-control" id="updateName" aria-describedby="updateNameHelp" placeholder="Nome da marca" v-model="$store.state.item.name">
                     </input-container-component>
                 </div>
 
                 <div class="form-group">
-                    <input-container-component title="Imagem" id="updateImage" id-help="updateImageHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+                    <input-container-component title="Imagem" id="updateImage" id-help="updateImageHelp" help-text="Selecione uma imagem no formato PNG">
                         <input type="file" class="form-control-file" id="updateImage" aria-describedby="updateImageHelp" placeholder="Selecione uma imagem" @change="updateImage($event)">
                     </input-container-component>
                 </div>
@@ -213,7 +213,7 @@ import Paginate from './Paginate.vue'
                     .then(response => {
                         this.$store.state.transaction.status = 'success'
                         this.$store.state.transaction.message = 'Registro de marca atualizado com sucesso!'
-
+                        
                         //limpar o campo de seleção de arquivos
                         updateImage.value = ''
                         this.loadList()
@@ -230,9 +230,6 @@ import Paginate from './Paginate.vue'
                 if(!confirmation) {
                     return false;
                 }
-
-                let formData = new FormData();
-                formData.append('_method', 'delete')
 
                 let url = this.urlBase + '/' + this.$store.state.item.id
 

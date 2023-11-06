@@ -20,12 +20,12 @@
                     </td>
                     <td v-if="view.visible || update.visible || remove.visible">
                         <button v-if="view.visible" class="btn btn-outline-primary btn-sm" :data-toggle="view.dataToggle"
-                            :data-target="view.dataTarget" @click="setStore(obj)">view</button>
+                            :data-target="view.dataTarget" @click="setStore(obj)">{{ view.title }}</button>
                         <button v-if="update.visible" class="btn btn-outline-primary btn-sm"
                             :data-toggle="update.dataToggle" :data-target="update.dataTarget"
-                            @click="setStore(obj)">update</button>
+                            @click="setStore(obj)">{{ update.title }}</button>
                         <button v-if="remove.visible" class="btn btn-outline-danger btn-sm" :data-toggle="remove.dataToggle"
-                            :data-target="remove.dataTarget" @click="setStore(obj)">remove</button>
+                            :data-target="remove.dataTarget" @click="setStore(obj)">{{ remove.title }}</button>
                     </td>
                 </tr>
             </tbody>
